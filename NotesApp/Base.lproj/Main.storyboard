@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -34,6 +35,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Notes" largeTitleDisplayMode="always" id="jTs-TC-Lwv">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="QW1-YO-ZyY">
+                            <imageReference key="image" image="abc" catalog="system" symbolScale="small"/>
+                            <color key="tintColor" systemColor="systemOrangeColor"/>
+                            <connections>
+                                <action selector="sort:" destination="F2B-P4-mb4" id="cBr-nj-yzs"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="3J2-5W-5LB">
                             <color key="tintColor" systemColor="systemOrangeColor"/>
                             <connections>
@@ -64,6 +72,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="abc" catalog="system" width="128" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

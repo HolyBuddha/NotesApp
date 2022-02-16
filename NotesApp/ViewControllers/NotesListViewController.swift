@@ -10,45 +10,35 @@ import CoreData
 
 class NotesListViewController: UITableViewController {
     
-    private let context = StorageManager.shared.persistentContainer.viewContext
+    //MARK: - Private properties
+    
     private var notesList: [Note] = []
-
-    @IBAction func sort(_ sender: UIBarButtonItem) {
-            filterList(notesList)
-    }
-    @IBAction func addNote(_ sender: UIBarButtonItem) {
-            let alert = UIAlertController(title: "Add new note", message: "Please enter text", preferredStyle: .alert)
-            let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
-                guard let note = alert.textFields?.first?.text, !note.isEmpty else { return }
-                self.save(note)
-            }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
-            alert.addAction(saveAction)
-            alert.addAction(cancelAction)
-            alert.addTextField { textField in
-                textField.placeholder = "New Note"
-            }
-            present(alert, animated: true)
-    }
+    private var segmentedControlIndex = 0
+    
+    // MARK: Life Cycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchData()
         if notesList.count == 0 { save("New note") }
+        reloadData()
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { notesList.count }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let note = notesList[indexPath.row]
         var content = cell.defaultContentConfiguration()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy HH:mm"
         content.text = note.text
+        content.secondaryText = dateFormatter.string(from: (note.date ?? NSDate.now))
         cell.contentConfiguration = content
         return cell
     }
@@ -75,9 +65,33 @@ class NotesListViewController: UITableViewController {
         
         return swipeActions
     }
+    
+    //MARK: - IB Actions
+    
+    @IBAction func sortNoteList(_ sender: UISegmentedControl) {
+        segmentedControlIndex = sender.selectedSegmentIndex
+        reloadData()
+    }
+    
+    @IBAction func addNote(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Add new note", message: "Please enter text", preferredStyle: .alert)
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let note = alert.textFields?.first?.text, !note.isEmpty else { return }
+            self.save(note)
+            self.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { textField in
+            textField.placeholder = "New Note"
+        }
+        present(alert, animated: true)
+    }
 }
-
 extension NotesListViewController {
+    
+    // MARK: Private Methods
     
     private func save(_ noteName: String) {
         StorageManager.shared.save(noteName) { note in
@@ -86,7 +100,7 @@ extension NotesListViewController {
             tableView.insertRows(at: [cellIndex], with: .automatic)
         }
     }
-
+    
     private func fetchData() {
         StorageManager.shared.fetchData { result in
             switch result {
@@ -98,31 +112,30 @@ extension NotesListViewController {
         }
     }
     
+    private func reloadData() {
+        notesList = segmentedControlIndex == 0
+        ? notesList.sorted(by: { $0.text?.lowercased() ?? "a" < $1.text?.lowercased() ?? "b"})
+        : notesList.sorted(by: { $0.date ?? NSDate.now > $1.date ?? NSDate.now })
+        tableView.reloadData()
+    }
+    
     // MARK: - AlertController
     
     private func showEditAlert(_ noteForCell: Note) {
-    let alert = UIAlertController(title: "Edit this note", message: "Please enter text", preferredStyle: .alert)
-    let editAction = UIAlertAction(title: "Save", style: .default) { _ in
-        guard let note = alert.textFields?.first?.text, !note.isEmpty else { return }
-        StorageManager.shared.edit(noteForCell, newName: note)
-        self.tableView.reloadData()
-    }
-    let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
-    alert.addAction(editAction)
-    alert.addAction(cancelAction)
-    alert.addTextField { textField in
-        textField.placeholder = "Edit Note"
-        textField.text = noteForCell.text
-    }
-    present(alert, animated: true)
-        
-    }
-    
-    func filterList(_ notelistForSort: [Note]) {
-        
-        let newNoteList = notelistForSort.sorted(by: { $0.text?.lowercased() ?? "a" < $1.text?.lowercased() ?? "b"})
-        notesList = newNoteList
-        tableView.reloadData()
+        let alert = UIAlertController(title: "Edit this note", message: "Please enter text", preferredStyle: .alert)
+        let editAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let note = alert.textFields?.first?.text, !note.isEmpty else { return }
+            StorageManager.shared.edit(noteForCell, newName: note)
+            self.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        alert.addAction(editAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { textField in
+            textField.placeholder = "Edit Note"
+            textField.text = noteForCell.text
+        }
+        present(alert, animated: true)
     }
     
 }

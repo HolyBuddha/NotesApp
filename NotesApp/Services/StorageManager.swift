@@ -8,9 +8,10 @@
 import CoreData
 
 class StorageManager {
+    
     static let shared = StorageManager()
     
-    let persistentContainer: NSPersistentContainer = {
+    private let persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "NotesCoreData")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -19,6 +20,7 @@ class StorageManager {
         })
         return container
     }()
+    
     private let viewContext: NSManagedObjectContext
 
     private init () { viewContext = persistentContainer.viewContext }
@@ -41,6 +43,7 @@ class StorageManager {
     func save(_ noteName: String, completion: (Note) -> Void) {
         let note = Note(context: viewContext)
         note.text = noteName
+        note.date = Date()
         completion(note)
         saveContext()
     }
@@ -48,6 +51,7 @@ class StorageManager {
     // edit data
     func edit(_ note: Note, newName: String) {
         note.text = newName
+        note.date = Date()
         saveContext()
     }
     
@@ -58,6 +62,7 @@ class StorageManager {
     }
 
     // MARK: - Core Data Saving support
+    
     func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {

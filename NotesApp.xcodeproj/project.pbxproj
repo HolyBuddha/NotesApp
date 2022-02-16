@@ -60,17 +60,49 @@
 		1230C71B27B05A4000C9D0A1 /* NotesApp */ = {
 			isa = PBXGroup;
 			children = (
-				1230C71C27B05A4000C9D0A1 /* AppDelegate.swift */,
-				1230C71E27B05A4000C9D0A1 /* SceneDelegate.swift */,
-				12145E8127B05EA900307EB5 /* NotesListViewController.swift */,
-				12145E8927B06A7D00307EB5 /* StorageManager.swift */,
-				1230C72227B05A4000C9D0A1 /* Main.storyboard */,
-				1230C72527B05A4200C9D0A1 /* Assets.xcassets */,
-				1230C72727B05A4200C9D0A1 /* LaunchScreen.storyboard */,
-				1230C72A27B05A4200C9D0A1 /* Info.plist */,
+				1234BE7227BDB4EE002A24D1 /* ViewControllers */,
+				1234BE7327BDB502002A24D1 /* Services */,
+				1234BE7427BDB5B7002A24D1 /* Storyboards */,
+				1234BE7527BDB5EC002A24D1 /* SupportingFiles */,
 				12145E8627B06A5200307EB5 /* NotesCoreData.xcdatamodeld */,
 			);
 			path = NotesApp;
+			sourceTree = "<group>";
+		};
+		1234BE7227BDB4EE002A24D1 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				12145E8127B05EA900307EB5 /* NotesListViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		1234BE7327BDB502002A24D1 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				12145E8927B06A7D00307EB5 /* StorageManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1234BE7427BDB5B7002A24D1 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				1230C72227B05A4000C9D0A1 /* Main.storyboard */,
+				1230C72727B05A4200C9D0A1 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		1234BE7527BDB5EC002A24D1 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				1230C71C27B05A4000C9D0A1 /* AppDelegate.swift */,
+				1230C71E27B05A4000C9D0A1 /* SceneDelegate.swift */,
+				1230C72527B05A4200C9D0A1 /* Assets.xcassets */,
+				1230C72A27B05A4200C9D0A1 /* Info.plist */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,7 +331,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Q3NH456PVT;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = NotesApp/Info.plist;
+				INFOPLIST_FILE = NotesApp/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -327,7 +359,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Q3NH456PVT;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = NotesApp/Info.plist;
+				INFOPLIST_FILE = NotesApp/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
